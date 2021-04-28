@@ -25,7 +25,7 @@ parser.add_argument('--hidden_layers',type=int,help="The number of hidden layere
 parser.add_argument('--dilations',type=str,help="The dilation scheme of the hidden layers",default="1,2,4,8")
 parser.add_argument('--hitsat',type=int,help='The number of items to measure the hit@k metric (i.e. hit@10 to see if the correct item is within the top 10 scores)',default=10)
 parser.add_argument('--max_len',type=int,help='Maximum length for the sequence',default=200)
-
+parser.add_argument('--min_len',type=int,help="Minimum session length for a sequence (filter out sessions less than this",default=10)
 
 # ----------------- Variables ----------------------#
 
@@ -45,11 +45,12 @@ dilations= list(map(int,args.dilations.split(",")))
 
 k = args.hitsat
 max_length = args.max_len
-
-
+min_len = args.min_len
 # ------------------Data Initialization----------------------#
 
 ml_1m = create_df(read_filename)
+
+ml_1m = filter_df(ml_1m,item_min=min_len)
 
 reset_object = reset_df()
 ml_1m = reset_object.fit_transform(ml_1m)
@@ -113,12 +114,10 @@ for epoch in range(num_epochs):
         max_test_hit = testing_hit
         max_train_hit = training_hit
     
-
     print("Training CE Loss: {:.5f}".format(running_loss/len(train_dl)))
     print("Training Hits@{:d}: {:.2f}".format(k,training_hit))
     print("Validation Hits@{:d}: {:.2f}".format(k,validation_hit))
     print("Testing Hits@{:d}: {:.2f}".format(k,testing_hit))
-    
 
 print("="*100)
 print("Maximum Training Hit@{:d}: {:.2f}".format(k,max_train_hit))
