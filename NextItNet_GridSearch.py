@@ -97,7 +97,7 @@ for num_epochs in num_epochs_grid:
                             max_train_hit = 0
                             max_val_hit = 0
                             max_test_hit = 0
-                            print(num_epochs,lr,batch_size,embedding_dim,hidden_layers,dilations)
+                            print(num_epochs,lr,batch_size,reg,embedding_dim,hidden_layers,dilations)
                             for epoch in range(num_epochs):
                                 
                                 model.train()  
