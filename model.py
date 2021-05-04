@@ -67,7 +67,7 @@ class NextItNet(nn.Module):
         
         self.hidden_layers = nn.Sequential(*[nn.Sequential(*[DilatedResBlock(d,embedding_dim,max_len) for d in dilations]) for _ in range(hidden_layers)])
 
-        self.final_layer = nn.Linear(embedding_dim, output_dim+1)
+        self.final_layer = nn.Linear(embedding_dim, output_dim)
 
     
     def forward(self,x):
